@@ -121,6 +121,14 @@ LICENSING:
    I hope that you'll be able to rebuild my design with them
 
 REBUILDING of FPGA CORES
+The sources are split into two sections:
+FPGA_with_MAC - this is the older version with Ethernet MAC taken from
+                http://opencores.org/project,ethernet_tri_mode
+FPGA_no_MAC - this is the newer version with renoved Ethernet MAC
+              instead two small state machines are implemented in
+	      ethernet_sender_X and ethernet_receiver_X (X=4 or 8)
+              controlling the PHY directly.
+
 My sources have been tested with three boards: SP601, Atlys and
 Spartan-3E Starter Kit. In the FPGA subdirectory there are
 three subdirectories: sp601, atlys and sk3e. In each of those
