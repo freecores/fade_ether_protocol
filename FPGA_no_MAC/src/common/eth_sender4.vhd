@@ -7,7 +7,7 @@
 -- License    : BSD License
 -- Company    : 
 -- Created    : 2012-03-30
--- Last update: 2013-04-21
+-- Last update: 2013-06-15
 -- Platform   : 
 -- Standard   : VHDL'93
 -------------------------------------------------------------------------------
@@ -220,7 +220,7 @@ begin  -- beh1
         end if;
       when WST_SEND_DATA =>
         -- send the data nibble by nibble
-        v_TxD     := select_nibble(tx_mem_data,r.nibble);
+        v_TxD     := select_nibble(tx_mem_data, r.nibble);
         c.TxD     <= v_TxD;
         c.Tx_En   <= '1';
         r_n.crc32 <= nextCRC32_D4(rev(v_TxD), r.crc32);
@@ -239,13 +239,13 @@ begin  -- beh1
           end if;
         end if;
       when WST_SEND_CRC =>
-        v_TxD := r.crc32(31-r.nibble*4 downto 28-r.nibble*4);
+        v_TxD   := r.crc32(31-r.nibble*4 downto 28-r.nibble*4);
         c.TxD   <= not rev(v_TxD);
         c.Tx_En <= '1';
         if r.nibble < 7 then
           r_n.nibble <= r.nibble + 1;
         else
-          r_n.count <= 200;             -- generate the IFG - 50 nibbles = 200
+          r_n.count <= 25;              -- generate the IFG - 25 nibbles = 100
                                         -- bits
           r_n.state <= WST_SEND_COMPLETED;
         end if;

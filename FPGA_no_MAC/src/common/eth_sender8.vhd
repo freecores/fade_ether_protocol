@@ -7,7 +7,7 @@
 -- License    : BSD License
 -- Company    : 
 -- Created    : 2012-03-30
--- Last update: 2013-04-21
+-- Last update: 2013-06-15
 -- Platform   : 
 -- Standard   : VHDL'93
 -------------------------------------------------------------------------------
@@ -237,7 +237,7 @@ begin  -- beh1
         if r.byte < 3 then
           r_n.byte <= r.byte + 1;
         else
-          r_n.count <= 25;              -- generate the IFG - 25 bytes = 200
+          r_n.count <= 13;              -- generate the IFG - 13 bytes = 104
                                         -- bits
           r_n.state <= WST_SEND_COMPLETED;
         end if;
