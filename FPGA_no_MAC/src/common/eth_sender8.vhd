@@ -7,7 +7,7 @@
 -- License    : BSD License
 -- Company    : 
 -- Created    : 2012-03-30
--- Last update: 2013-06-15
+-- Last update: 2013-06-16
 -- Platform   : 
 -- Standard   : VHDL'93
 -------------------------------------------------------------------------------
@@ -314,12 +314,10 @@ begin  -- beh1
     if tx_rst_n = '0' then              -- asynchronous reset (active low)
       tx_start   <= '0';
       tx_start_0 <= '0';
-      tx_start_1 <= '0';
       state1     <= ST1_IDLE;
       tx_ready   <= '1';
     elsif Tx_Clk'event and Tx_Clk = '1' then  -- rising clock edge
-      tx_start_1 <= start_0;
-      tx_start_0 <= tx_start_1;
+      tx_start_0 <= start_0;
       tx_start   <= tx_start_0;
       case state1 is
         when ST1_IDLE =>
