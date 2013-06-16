@@ -237,7 +237,7 @@ begin  -- beh1
         if r.byte < 3 then
           r_n.byte <= r.byte + 1;
         else
-          r_n.count <= 13;              -- generate the IFG - 13 bytes = 104
+          r_n.count <= 12;              -- generate the IFG - 12 bytes = 96
                                         -- bits
           r_n.state <= WST_SEND_COMPLETED;
         end if;

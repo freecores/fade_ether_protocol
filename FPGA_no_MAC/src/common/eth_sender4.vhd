@@ -245,7 +245,7 @@ begin  -- beh1
         if r.nibble < 7 then
           r_n.nibble <= r.nibble + 1;
         else
-          r_n.count <= 25;              -- generate the IFG - 25 nibbles = 100
+          r_n.count <= 24;              -- generate the IFG - 24 nibbles = 96
                                         -- bits
           r_n.state <= WST_SEND_COMPLETED;
         end if;
