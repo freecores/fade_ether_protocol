@@ -515,11 +515,11 @@ begin  -- dmgr_a1
         -- You may change the constants used in expressions
         -- below to change speed of adjustment
         if r.all_pkt_count >= PKT_CNT_MAX then
-          if r.retr_pkt_count < PKT_CNT_MAX/64 then
-            if r.transm_delay > 32 then
+          if r.retr_pkt_count < PKT_CNT_MAX/32 then
+            if r.transm_delay > 16 then
               r_i.transm_delay <= r.transm_delay-r.transm_delay/16;
             end if;
-          elsif r.retr_pkt_count > PKT_CNT_MAX/16 then
+          elsif r.retr_pkt_count > PKT_CNT_MAX/8 then
             if r.transm_delay < 1000000 then
               r_i.transm_delay <= r.transm_delay+r.transm_delay/4;
             end if;
