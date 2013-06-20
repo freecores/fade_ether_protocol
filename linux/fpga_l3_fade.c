@@ -654,7 +654,7 @@ static int my_proto_rcv(struct sk_buff * skb, struct net_device * dev, struct pa
                         sd->maps[1].offset = (sd->maps[1].offset + USER_LEN*PKTS_IN_SET) & MY_BUF_LEN_MASK;
                         write_unlock_bh(&sd->maps_rwlock);
                         /* Now we need to check for confirmed packet from the next set */
-                        ackd_set_nr+=1;
+                        ackd_set_nr = (ackd_set_nr + 1) & SET_NUMBER_MASK;
                         while (sd->last_pkt <  PKTS_IN_SET) {
                             if (sd->pkts[sd->last_pkt] != ackd_set_nr) break; //Packet not cofirmed
                             else sd->last_pkt++;
