@@ -26,8 +26,9 @@
 #include <sys/time.h>
 
        
-void main()
+void main(int argc, char * argv[])
 {
+  int active[3]={0,0,0};
   struct l3_v1_buf_pointers bp;
   struct l3_v1_slave sl[3] = {
     {
@@ -55,6 +56,12 @@ void main()
   int stop;
   struct sched_param s;
   s.sched_priority = 90;
+  //Read active channels
+  for(i=1;i<argc;i++) {
+    int n = atoi(argv[i]);
+    if ((n>=0) && (n<=2))
+      active[n]=1;
+  }  
   printf("sched=%d\n",sched_setscheduler(0,SCHED_RR,&s));
   //Prepare all slaves to work
   for(i=0;i<3;i++) {
@@ -80,10 +87,12 @@ void main()
   //Start the transmission
   gettimeofday(&tv, NULL);
   tstart=tv.tv_sec+1.0e-6*tv.tv_usec;
-  stop=tv.tv_sec+60;
+  stop=tv.tv_sec+300;
   for(i=0;i<=2;i++) {
-    res = ioctl(frs[i],L3_V1_IOC_STARTMAC,&sl[i]);
-    printf("Result of start for slave %d : %d\n",i,res);
+    if(active[i]) {
+       res = ioctl(frs[i],L3_V1_IOC_STARTMAC,&sl[i]);
+       printf("Result of start for slave %d : %d\n",i,res);
+       }
   }
   int first_served=0;
   do{
@@ -113,7 +122,7 @@ void main()
 	  c = *(uint32_t *)(v[i]+bp.tail);
   	  c = ntohl(c);
 	  bp.tail=(bp.tail+4) & (blen[i]-1); //Adjust tail pointer modulo blen[i]-1
-	  if(c != data[i]) {
+	  if (__builtin_expect((c != data[i]), 0)) {
 	    printf("Error! received: %8.8x expected: %8.8x \n",c,data[i]);
 	    exit(1);
 	  }
@@ -130,8 +139,9 @@ void main()
     }
   } while (1);
   tend=tend-tstart;
+  fprintf(stderr,"act0:%d act1:%d act2:%d\n",active[0],active[1],active[2]);
   for(i=0;i<3;i++) {
-     printf("total data %d=%lld time=%g throughput=%g [Mb/s]\n",i,total_len[i], tend, total_len[i]/tend*8.0);
+     fprintf(stderr,"total data %d=%lld time=%g throughput=%g [Mb/s]\n",i,total_len[i], tend, total_len[i]/tend*8.0);
   }
   for(i=0;i<=2;i++) {
     res = ioctl(frs[i],L3_V1_IOC_STOPMAC,0);
