@@ -231,7 +231,7 @@ begin  -- beh1
           end if;
         end if;
       when WST_SEND_CRC =>
-        v_TxD   := r.crc32(31-r.byte*8 downto 24-r.byte*4);
+        v_TxD   := r.crc32(31-r.byte*8 downto 24-r.byte*8);
         c.TxD   <= not rev(v_TxD);
         c.Tx_En <= '1';
         if r.byte < 3 then
